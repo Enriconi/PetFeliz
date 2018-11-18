@@ -16,9 +16,9 @@ public class TesteCliente {
 //		
 //		Cliente cliente = new Cliente();		
 //		cliente.setNomeCliente("Gabriel Soares Enriconi");
-//		cliente.setCpfCliente("023.357.080-23");
+//		cliente.setCpfCliente("020.350.080-20");
 //		cliente.setEmailCliente("gabriel.enriconi@gmail.com");
-//		cliente.setSenhaCliente("Batata123");
+//		cliente.setSenhaCliente("essaNaoEhMinhaSenha");
 //		cliente.setTelefoneCliente("051 9 8322-2090");
 //		
 //		ClienteDAO cDAO = new ClienteDAO();
@@ -31,9 +31,9 @@ public class TesteCliente {
 //		
 //		Cliente cliente = new Cliente();		
 //		cliente.setNomeCliente("Gabriel Enriconi");
-//		cliente.setCpfCliente("023.357.080-23");
+//		cliente.setCpfCliente("020.350.080-20");
 //		cliente.setEmailCliente("gabriel.enriconi@gmail.com");
-//		cliente.setSenhaCliente("Batata123.");
+//		cliente.setSenhaCliente("essaNaoEhMinhaSenha.");
 //		cliente.setTelefoneCliente("051 9 8322-2090");
 //		cliente.setIdCliente(2);
 //		
