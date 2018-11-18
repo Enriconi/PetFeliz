@@ -3,8 +3,7 @@ package br.com.integrador.petshop;
 import java.util.List;
 
 import br.com.integrador.petshop.model.Endereco;
-//import br.com.integrador.petshop.model.Cliente;
-import br.com.integrador.petshop.repository.EnderecoDAO;
+import br.com.integrador.petshop.persistencia.EnderecoDAO;
 
 
 

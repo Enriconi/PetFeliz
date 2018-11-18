@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.integrador.petshop.model.Pedido;
-import br.com.integrador.petshop.repository.PedidoDAO;
+import br.com.integrador.petshop.persistencia.PedidoDAO;
 
 @Controller    
 @RequestMapping(path="/pedido/") 

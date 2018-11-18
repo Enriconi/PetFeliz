@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.integrador.petshop.model.Cliente;
 import br.com.integrador.petshop.model.Petshop;
-import br.com.integrador.petshop.repository.ClienteDAO;
+import br.com.integrador.petshop.persistencia.ClienteDAO;
 
 
 

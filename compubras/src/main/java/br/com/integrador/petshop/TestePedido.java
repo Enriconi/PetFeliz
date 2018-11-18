@@ -3,7 +3,7 @@ package br.com.integrador.petshop;
 import java.util.List;
 
 import br.com.integrador.petshop.model.Pedido;
-import br.com.integrador.petshop.repository.PedidoDAO;
+import br.com.integrador.petshop.persistencia.PedidoDAO;
 
 public class TestePedido {
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package br.com.integrador.petshop.repository;
+package br.com.integrador.petshop.persistencia;
 
 import java.sql.PreparedStatement;    
 import java.sql.ResultSet;
@@ -8,39 +8,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.integrador.petshop.model.Pedido;
+import br.com.integrador.petshop.model.Produto;
+import br.com.integrador.petshop.model.ProdutoPedido;
 
 
-public class PedidoDAO {
+public class ProdutoPedidoDAO {
 	
 	private ConexaoMysql conexao;
 	
-	public PedidoDAO() {
+	public ProdutoPedidoDAO() {
 		super();
 		this.conexao = new ConexaoMysql("localhost", "root", "", "pet_feliz");
 	}
 	
 	//-----------------------------CADASTRAR-------------------------------------------------------
 
-	public Pedido cadastrar(Pedido pedido) {
+	public ProdutoPedido cadastrar(ProdutoPedido produtoPedido) {
 		
 		// ABRIR A CONEXAO COM O BANCO		
 		this.conexao.abrirConexao();
 		// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-		String sqlInsert = "INSERT INTO pedido VALUES(null, ?, ?, ?);";
+		String sqlInsert = "INSERT INTO produto_pedido VALUES(null, ?, ?);";
 		try {
 			// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 			PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
-			// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PEDIDO
-			statement.setString(1, pedido.getDataPedidoEmissao());
-			statement.setString(2, pedido.getDescricaoPedido());
-			statement.setInt(3, pedido.getQtdeItemPedido());
-	
+			// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PETSHOPRODUTOS
+			statement.setLong(1, produtoPedido.getPedido().getIdPedido());
+			statement.setLong(2, produtoPedido.getProduto().getIdProduto());
 			// EXECUTAR A INSTRUCAO NO BANCO
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			if(rs.next()){
 				//pega o id
-				pedido.setIdPedido(rs.getLong(1));
+				produtoPedido.setIdProdutoPedido(rs.getLong(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -48,26 +48,25 @@ public class PedidoDAO {
 			// FECHAR A CONEXAO COM O BANCO
 			this.conexao.fecharConexao();
 		}
-		return pedido;
+		return produtoPedido;
 	}
 	
 	//--------------------------------EDITAR---------------------------------------
 	
-		// id_pedido=1;
-		public void editar(Pedido pedido) {
+		// id_produto_pedido=1;
+		public void editar(ProdutoPedido produtoPedido) {
 			// ABRIR A CONEXAO COM O BANCO
 			this.conexao.abrirConexao();
 			// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-			String sqlUpdate = "UPDATE pedido SET data_pedido_emissao=?, descricao_pedido=?, qtde_item_pedido=? WHERE id_pedido=?;";
+			String sqlUpdate = "UPDATE produto_pedido SET id_pedido=?, id_produto=? WHERE id_produto_pedido=?;";
 
 			try {
 				// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 				PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlUpdate);
-				// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PEDIDO
-				statement.setString(1, pedido.getDataPedidoEmissao());
-				statement.setString(2, pedido.getDescricaoPedido());
-				statement.setInt(3, pedido.getQtdeItemPedido());
-				statement.setLong(4, pedido.getIdPedido());
+				// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PRODUTOPEDIDO
+				statement.setLong(1, produtoPedido.getPedido().getIdPedido());
+				statement.setLong(2, produtoPedido.getProduto().getIdProduto());
+				statement.setLong(3, produtoPedido.getIdProdutoPedido());
 				statement.executeUpdate();
 
 			} catch (SQLException e) {
@@ -78,12 +77,12 @@ public class PedidoDAO {
 		}
 
 		//---------------------------------EXCLUIR-------------------------------------
-		// DELETE FROM pedido WHERE id_pedido=3;
+		// DELETE FROM produto_pedido WHERE id_produto_pedido=3;
 			public void excluir(long id) {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlDelete = "DELETE FROM pedido WHERE id_pedido=?;";
+				String sqlDelete = "DELETE FROM produto_pedido WHERE id_produto_pedido=?;";
 				// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 				try {
 					PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlDelete);
@@ -99,65 +98,87 @@ public class PedidoDAO {
 		
 			//------------------------------BUSCAR TODOS-------------------------------------------------------------
 
-			// SELECT * FROM pedido;
-			public List<Pedido> buscarTodos() {
+			// SELECT * FROM produto_pedido;
+			public List<ProdutoPedido> buscarTodos() {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlSelect = "SELECT * FROM pedido;";
+				String sqlSelect = "SELECT * FROM produto_pedido pp INNER JOIN pedido p ON pp.id_pedido = p.id_pedido INNER JOIN produto prod ON pp.id_produto = prod.id_produto;";
 				PreparedStatement statement;
-				Pedido pedido = null;
-				List<Pedido> listaPedidos = new ArrayList<Pedido>();
+				ProdutoPedido produtoPedido = null;
+				List<ProdutoPedido> listaProdutoPedido = new ArrayList<ProdutoPedido>();
 				try {
 					statement = this.conexao.getConexao().prepareStatement(sqlSelect);
 					ResultSet rs = statement.executeQuery();
 					
 					while(rs.next()) {
-						// Converter um objeto ResultSet em um objeto Pedido
-						pedido = new Pedido();
+						// Converter um objeto ResultSet em um objeto ProdutoPedido
+						produtoPedido = new ProdutoPedido();
+						produtoPedido.setIdProdutoPedido(rs.getLong("id_produto_pedido"));
+						
+						Pedido pedido = new Pedido();
 						pedido.setIdPedido(rs.getLong("id_pedido"));
 						pedido.setDataPedidoEmissao(rs.getString("data_pedido_emissao"));
 						pedido.setDescricaoPedido(rs.getString("descricao_pedido"));
 						pedido.setQtdeItemPedido(rs.getInt("qtde_item_pedido"));
 						
-						listaPedidos.add(pedido);
+						Produto produto = new Produto();
+						produto.setIdProduto(rs.getLong("id_produto"));
+						produto.setNomeProduto(rs.getString("nome_produto"));
+						produto.setDescricaoProduto(rs.getString("descricao_produto"));
+						produto.setPrecoProduto(rs.getDouble("preco_produto"));
+						produto.setEstoqueProduto(rs.getInt("estoque_produto"));
+					
+						produtoPedido.setPedido(pedido);
+						produtoPedido.setProduto(produto);
+						listaProdutoPedido.add(produtoPedido);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					this.conexao.fecharConexao();
 				}
-				return listaPedidos;
+				return listaProdutoPedido;
 			}
 		
 			//--------------------------------BUSCAR POR ID-----------------------------------------------		
 
-			// SELECT * FROM pedido WHERE id_pedido=2;
-			public Pedido buscarPorId(long id) {
+			// SELECT * FROM produto_pedido WHERE id_produto_pedido=2;
+			public ProdutoPedido buscarPorId(long id) {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlInsert = "SELECT * FROM pedido WHERE id_pedido=?;";
+				String sqlInsert = "SELECT * FROM produto_pedido pp INNER JOIN pedido p ON pp.id_pedido = p.id_pedido INNER JOIN produto prod ON pp.id_produto = prod.id_produto WHERE id_produto_pedido=?;";
 				PreparedStatement statement;
-				Pedido pedido = null;
+				ProdutoPedido produtoPedido = null;
 				try {
 					statement = this.conexao.getConexao().prepareStatement(sqlInsert);
 					statement.setLong(1, id);
 					ResultSet rs = statement.executeQuery();
 					if(rs.next()) {
-						// Converter um objeto ResultSet em um objeto Pedido
-						pedido = new Pedido();
+						// Converter um objeto ResultSet em um objeto ProdutoPedido
+						produtoPedido = new ProdutoPedido();
+						produtoPedido.setIdProdutoPedido(rs.getLong("id_produto_pedido"));
+						
+						Pedido pedido = new Pedido();
 						pedido.setIdPedido(rs.getLong("id_pedido"));
 						pedido.setDataPedidoEmissao(rs.getString("data_pedido_emissao"));
 						pedido.setDescricaoPedido(rs.getString("descricao_pedido"));
 						pedido.setQtdeItemPedido(rs.getInt("qtde_item_pedido"));
+						
+						Produto produto = new Produto();
+						produto.setIdProduto(rs.getLong("id_produto"));
+						produto.setNomeProduto(rs.getString("nome_produto"));
+						produto.setDescricaoProduto(rs.getString("descricao_produto"));
+						produto.setPrecoProduto(rs.getInt("preco_produto"));
+						produto.setEstoqueProduto(rs.getInt("estoque_produto"));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					this.conexao.fecharConexao();
 				}
-				return pedido;
+				return produtoPedido;
 			}	
 			
 			//------------------------------BUSCAR POR LOGIN E SENHA------------------------------

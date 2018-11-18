@@ -1,4 +1,4 @@
-package br.com.integrador.petshop.repository;
+package br.com.integrador.petshop.persistencia;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

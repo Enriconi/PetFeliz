@@ -1,4 +1,4 @@
-package br.com.integrador.petshop.repository;
+package br.com.integrador.petshop.persistencia;
 
 import java.sql.PreparedStatement;    
 import java.sql.ResultSet;
@@ -7,47 +7,42 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.integrador.petshop.model.Animal;
-import br.com.integrador.petshop.model.Cliente;
 import br.com.integrador.petshop.model.Petshop;
+import br.com.integrador.petshop.model.Produto;
 
 
-public class AnimalDAO {
+public class ProdutoDAO {
 	
 	private ConexaoMysql conexao;
 	
-	public AnimalDAO() {
+	public ProdutoDAO() {
 		super();
 		this.conexao = new ConexaoMysql("localhost", "root", "", "pet_feliz");
 	}
 	
 	//-----------------------------CADASTRAR-------------------------------------------------------
 
-	public Animal cadastrar(Animal animal) {
+	public Produto cadastrar(Produto produto) {
 		
 		// ABRIR A CONEXAO COM O BANCO		
 		this.conexao.abrirConexao();
 		// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-		String sqlInsert = "INSERT INTO animal VALUES(null, ?, ?, ?, ?, ?, ?, ?);";
+		String sqlInsert = "INSERT INTO produto VALUES(null, ?, ?, ?, ?, ?);";
 		try {
-			
 			// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 			PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
-			// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO ANIMAL
-			statement.setString(1, animal.getNomeAnimal());
-			statement.setString(2, animal.getRacaAnimal());
-			statement.setInt(3, animal.getIdadeAnimal());
-			statement.setString(4, animal.getDescricaoAnimal());
-			statement.setString(5, animal.getSexoAnimal());
-			statement.setLong(6, animal.getCliente().getIdCliente());
-			statement.setLong(7, animal.getPetshop().getIdPetshop());
-
+			// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PRODUTO
+			statement.setString(1, produto.getNomeProduto());
+			statement.setString(2, produto.getDescricaoProduto());
+			statement.setDouble(3, produto.getPrecoProduto());
+			statement.setInt(4, produto.getEstoqueProduto());
+			statement.setLong(5, produto.getPetshop().getIdPetshop());
 			// EXECUTAR A INSTRUCAO NO BANCO
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			if(rs.next()){
 				//pega o id
-				animal.setIdAnimal(rs.getLong(1));
+				produto.setIdProduto(rs.getLong(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -55,33 +50,30 @@ public class AnimalDAO {
 			// FECHAR A CONEXAO COM O BANCO
 			this.conexao.fecharConexao();
 		}
-		return animal;
+		return produto;
 	}
 	
 	//--------------------------------EDITAR---------------------------------------
 	
-		// id_animal=1;
-		public void editar(Animal animal) {
+		// id_produto=1;
+		public void editar(Produto produto) {
 			// ABRIR A CONEXAO COM O BANCO
 			this.conexao.abrirConexao();
 			// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-			String sqlUpdate = "UPDATE animal SET nome_animal=?, raca_animal=?, idade_animal=?, descricao_animal=?, sexo_animal=?, id_cliente=?, id_petshop=? WHERE id_animal=?;";
+			String sqlUpdate = "UPDATE produto SET nome_produto=?, descricao_produto=?, preco_produto=?, estoque_produto=?, id_petshop=? WHERE id_produto=?;";
 
 			try {
 				// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 				PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlUpdate);
-				// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO ANIMAL
-				statement.setString(1, animal.getNomeAnimal());
-				statement.setString(2, animal.getRacaAnimal());
-				statement.setInt(3, animal.getIdadeAnimal());
-				statement.setString(4, animal.getDescricaoAnimal());
-				statement.setString(5, animal.getSexoAnimal());
-				statement.setLong(6, animal.getCliente().getIdCliente());
-				statement.setLong(7, animal.getPetshop().getIdPetshop());
-				statement.setLong(8, animal.getIdAnimal());
-
+				// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PRODUTO
+				statement.setString(1, produto.getNomeProduto());
+				statement.setString(2, produto.getDescricaoProduto());
+				statement.setDouble(3, produto.getPrecoProduto());
+				statement.setInt(4, produto.getEstoqueProduto());
+				statement.setLong(5, produto.getPetshop().getIdPetshop());
+				statement.setLong(6, produto.getIdProduto());
 				statement.executeUpdate();
-
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -90,12 +82,12 @@ public class AnimalDAO {
 		}
 
 		//---------------------------------EXCLUIR-------------------------------------
-		// DELETE FROM animal WHERE id_animal=3;
+		// DELETE FROM produto WHERE id_produto=3;
 			public void excluir(long id) {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlDelete = "DELETE FROM animal WHERE id_animal=?;";
+				String sqlDelete = "DELETE FROM produto WHERE id_produto=?;";
 				// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 				try {
 					PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlDelete);
@@ -111,36 +103,27 @@ public class AnimalDAO {
 		
 			//------------------------------BUSCAR TODOS-------------------------------------------------------------
 
-			// SELECT * FROM animal;
-			public List<Animal> buscarTodos() {
+			// SELECT * FROM produto;
+			public List<Produto> buscarTodos() {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlSelect = "SELECT * FROM animal a INNER JOIN cliente c ON a.id_cliente = c.id_cliente INNER JOIN petshop p ON a.id_petshop = p.id_petshop;";
+				String sqlSelect = "SELECT * FROM produto prod INNER JOIN petshop p ON prod.id_petshop = p.id_petshop;";
 				PreparedStatement statement;
-				Animal animal = null;
-				List<Animal> listaAnimais = new ArrayList<Animal>();
+				Produto produto = null;
+				List<Produto> listaProdutos = new ArrayList<Produto>();
 				try {
 					statement = this.conexao.getConexao().prepareStatement(sqlSelect);
 					ResultSet rs = statement.executeQuery();
 					
 					while(rs.next()) {
-						// Converter um objeto ResultSet em um objeto Animal
-						animal = new Animal();
-						animal.setIdAnimal(rs.getLong("id_animal"));
-						animal.setNomeAnimal(rs.getString("nome_animal"));
-						animal.setRacaAnimal(rs.getString("raca_animal"));
-						animal.setIdadeAnimal(rs.getInt("idade_animal"));
-						animal.setDescricaoAnimal(rs.getString("descricao_animal"));
-						animal.setSexoAnimal(rs.getString("sexo_animal"));
-						
-						Cliente cliente = new Cliente();
-						cliente.setIdCliente(rs.getLong("id_cliente"));
-						cliente.setNomeCliente(rs.getString("nome_cliente"));
-						cliente.setCpfCliente(rs.getString("cpf_cliente"));
-						cliente.setEmailCliente(rs.getString("email_cliente"));
-						cliente.setSenhaCliente(rs.getString("senha_cliente"));
-						cliente.setTelefoneCliente(rs.getString("telefone_cliente"));
+						// Converter um objeto ResultSet em um objeto Produto
+						produto = new Produto();
+						produto.setIdProduto(rs.getLong("id_produto"));
+						produto.setNomeProduto(rs.getString("nome_produto"));
+						produto.setDescricaoProduto(rs.getString("descricao_produto"));
+						produto.setPrecoProduto(rs.getInt("preco_produto"));
+						produto.setEstoqueProduto(rs.getInt("estoque_produto"));
 						
 						Petshop petshop = new Petshop();
 						petshop.setIdPetshop(rs.getLong("id_petshop"));
@@ -148,51 +131,40 @@ public class AnimalDAO {
 						petshop.setCnpjPetshop(rs.getString("cnpj_petshop"));
 						petshop.setEmailPetshop(rs.getString("email_petshop"));
 						petshop.setSenhaPetshop(rs.getString("senha_petshop"));
-						petshop.setTelefonePetshop(rs.getString("telefone_petshop"));
 					
-						animal.setCliente(cliente);
-						animal.setPetshop(petshop);
-						listaAnimais.add(animal);
+						produto.setPetshop(petshop);
+						listaProdutos.add(produto);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					this.conexao.fecharConexao();
 				}
-				return listaAnimais;
+				return listaProdutos;
 			}
 		
 			//--------------------------------BUSCAR POR ID-----------------------------------------------		
 
-			// SELECT * FROM animal WHERE id_animal=2;
-			public Animal buscarPorId(long id) {
+			// SELECT * FROM produto WHERE id_produto=2;
+			public Produto buscarPorId(long id) {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlInsert = "SELECT * FROM animal a INNER JOIN cliente c ON a.id_cliente = c.id_cliente INNER JOIN petshop p ON a.id_petshop = p.id_petshop WHERE id_animal=?;";
+				String sqlInsert =  "SELECT * FROM produto prod INNER JOIN petshop p ON prod.id_petshop = p.id_petshop WHERE id_produto=?;";
 				PreparedStatement statement;
-				Animal animal = null;
+				Produto produto = null;
 				try {
 					statement = this.conexao.getConexao().prepareStatement(sqlInsert);
 					statement.setLong(1, id);
 					ResultSet rs = statement.executeQuery();
 					if(rs.next()) {
-						// Converter um objeto ResultSet em um objeto Animal
-						animal = new Animal();
-						animal.setIdAnimal(rs.getLong("id_animal"));
-						animal.setNomeAnimal(rs.getString("nome_animal"));
-						animal.setRacaAnimal(rs.getString("raca_animal"));
-						animal.setIdadeAnimal(rs.getInt("idade_animal"));
-						animal.setDescricaoAnimal(rs.getString("descricao_animal"));
-						animal.setSexoAnimal(rs.getString("sexo_animal"));
-						
-						Cliente cliente = new Cliente();
-						cliente.setIdCliente(rs.getLong("id_cliente"));
-						cliente.setNomeCliente(rs.getString("nome_cliente"));
-						cliente.setCpfCliente(rs.getString("cpf_cliente"));
-						cliente.setEmailCliente(rs.getString("email_cliente"));
-						cliente.setSenhaCliente(rs.getString("senha_cliente"));
-						cliente.setTelefoneCliente(rs.getString("telefone_cliente"));
+						// Converter um objeto ResultSet em um objeto Produto
+						produto = new Produto();
+						produto.setIdProduto(rs.getLong("id_produto"));
+						produto.setNomeProduto(rs.getString("nome_produto"));
+						produto.setDescricaoProduto(rs.getString("descricao_produto"));
+						produto.setPrecoProduto(rs.getInt("preco_produto"));
+						produto.setEstoqueProduto(rs.getInt("estoque_produto"));
 						
 						Petshop petshop = new Petshop();
 						petshop.setIdPetshop(rs.getLong("id_petshop"));
@@ -200,15 +172,13 @@ public class AnimalDAO {
 						petshop.setCnpjPetshop(rs.getString("cnpj_petshop"));
 						petshop.setEmailPetshop(rs.getString("email_petshop"));
 						petshop.setSenhaPetshop(rs.getString("senha_petshop"));
-						petshop.setTelefonePetshop(rs.getString("telefone_petshop"));
-
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					this.conexao.fecharConexao();
 				}
-				return animal;
+				return produto;
 			}	
 			
 			//------------------------------BUSCAR POR LOGIN E SENHA------------------------------

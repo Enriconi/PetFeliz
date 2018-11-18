@@ -1,4 +1,4 @@
-package br.com.integrador.petshop.repository;
+package br.com.integrador.petshop.persistencia;
 
 import java.sql.PreparedStatement;    
 import java.sql.ResultSet;
@@ -7,40 +7,45 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.integrador.petshop.model.Pedido;
-import br.com.integrador.petshop.model.Produto;
-import br.com.integrador.petshop.model.ProdutoPedido;
+import br.com.integrador.petshop.model.Cliente;
+import br.com.integrador.petshop.model.Endereco;
 
 
-public class ProdutoPedidoDAO {
+public class EnderecoDAO {
 	
 	private ConexaoMysql conexao;
 	
-	public ProdutoPedidoDAO() {
+	public EnderecoDAO() {
 		super();
 		this.conexao = new ConexaoMysql("localhost", "root", "", "pet_feliz");
 	}
 	
 	//-----------------------------CADASTRAR-------------------------------------------------------
 
-	public ProdutoPedido cadastrar(ProdutoPedido produtoPedido) {
+	public Endereco cadastrar(Endereco endereco) {
 		
 		// ABRIR A CONEXAO COM O BANCO		
 		this.conexao.abrirConexao();
 		// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-		String sqlInsert = "INSERT INTO produto_pedido VALUES(null, ?, ?);";
+		String sqlInsert = "INSERT INTO endereco VALUES(null, ?, ?, ?, ?, ?, ?, ?);";
 		try {
+			
 			// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 			PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
-			// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PETSHOPRODUTOS
-			statement.setLong(1, produtoPedido.getPedido().getIdPedido());
-			statement.setLong(2, produtoPedido.getProduto().getIdProduto());
+			// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO ENDERECO
+			statement.setString(1, endereco.getCep());
+			statement.setString(2, endereco.getEstado());
+			statement.setString(3, endereco.getCidade());
+			statement.setString(4, endereco.getBairro());
+			statement.setString(5, endereco.getRua());
+			statement.setInt(6, endereco.getNumero());
+			statement.setLong(7, endereco.getCliente().getIdCliente());
 			// EXECUTAR A INSTRUCAO NO BANCO
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			if(rs.next()){
 				//pega o id
-				produtoPedido.setIdProdutoPedido(rs.getLong(1));
+				endereco.setIdEndereco(rs.getLong(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -48,25 +53,31 @@ public class ProdutoPedidoDAO {
 			// FECHAR A CONEXAO COM O BANCO
 			this.conexao.fecharConexao();
 		}
-		return produtoPedido;
+		return endereco;
 	}
 	
 	//--------------------------------EDITAR---------------------------------------
 	
-		// id_produto_pedido=1;
-		public void editar(ProdutoPedido produtoPedido) {
+		// id_endereco=1;
+		public void editar(Endereco endereco) {
 			// ABRIR A CONEXAO COM O BANCO
 			this.conexao.abrirConexao();
 			// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-			String sqlUpdate = "UPDATE produto_pedido SET id_pedido=?, id_produto=? WHERE id_produto_pedido=?;";
+			String sqlUpdate = "UPDATE endereco SET cep=?, estado=?, cidade=?, bairro=?, rua=?, numero=?, id_cliente=? WHERE id_endereco=?;";
 
 			try {
 				// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 				PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlUpdate);
-				// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO PRODUTOPEDIDO
-				statement.setLong(1, produtoPedido.getPedido().getIdPedido());
-				statement.setLong(2, produtoPedido.getProduto().getIdProduto());
-				statement.setLong(3, produtoPedido.getIdProdutoPedido());
+				// SUBSTITUIR AS INTERROGACOES PELOS VALORES QUE ESTAO NO OBJETO ENDERECO
+				statement.setString(1, endereco.getCep());
+				statement.setString(2, endereco.getEstado());
+				statement.setString(3, endereco.getCidade());
+				statement.setString(4, endereco.getBairro());
+				statement.setString(5, endereco.getRua());
+				statement.setInt(6, endereco.getNumero());
+				statement.setLong(7, endereco.getCliente().getIdCliente());
+				statement.setLong(8, endereco.getIdEndereco());
+
 				statement.executeUpdate();
 
 			} catch (SQLException e) {
@@ -77,12 +88,12 @@ public class ProdutoPedidoDAO {
 		}
 
 		//---------------------------------EXCLUIR-------------------------------------
-		// DELETE FROM produto_pedido WHERE id_produto_pedido=3;
+		// DELETE FROM endereco WHERE id_endereco=3;
 			public void excluir(long id) {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlDelete = "DELETE FROM produto_pedido WHERE id_produto_pedido=?;";
+				String sqlDelete = "DELETE FROM endereco WHERE id_endereco=?;";
 				// DECLARA E INICIALIZA UM STATEMENT, OBJETO USADO PARA PREPARAR O SQL A SER EXECUTADO
 				try {
 					PreparedStatement statement = this.conexao.getConexao().prepareStatement(sqlDelete);
@@ -98,87 +109,88 @@ public class ProdutoPedidoDAO {
 		
 			//------------------------------BUSCAR TODOS-------------------------------------------------------------
 
-			// SELECT * FROM produto_pedido;
-			public List<ProdutoPedido> buscarTodos() {
+			// SELECT * FROM endereco;
+			public List<Endereco> buscarTodos() {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlSelect = "SELECT * FROM produto_pedido pp INNER JOIN pedido p ON pp.id_pedido = p.id_pedido INNER JOIN produto prod ON pp.id_produto = prod.id_produto;";
+				String sqlSelect = "SELECT * FROM endereco e INNER JOIN cliente c ON e.id_cliente = c.id_cliente;";
 				PreparedStatement statement;
-				ProdutoPedido produtoPedido = null;
-				List<ProdutoPedido> listaProdutoPedido = new ArrayList<ProdutoPedido>();
+				Endereco endereco = null;
+				List<Endereco> listaEnderecos = new ArrayList<Endereco>();
 				try {
 					statement = this.conexao.getConexao().prepareStatement(sqlSelect);
 					ResultSet rs = statement.executeQuery();
 					
 					while(rs.next()) {
-						// Converter um objeto ResultSet em um objeto ProdutoPedido
-						produtoPedido = new ProdutoPedido();
-						produtoPedido.setIdProdutoPedido(rs.getLong("id_produto_pedido"));
+						// Converter um objeto ResultSet em um objeto Endereco
+						endereco = new Endereco();
+						endereco.setIdEndereco(rs.getLong("id_endereco"));
+						endereco.setCep(rs.getString("cep"));
+						endereco.setEstado(rs.getString("estado"));
+						endereco.setCidade(rs.getString("cidade"));
+						endereco.setBairro(rs.getString("bairro"));
+						endereco.setRua(rs.getString("rua"));
+						endereco.setNumero(rs.getInt("numero"));
 						
-						Pedido pedido = new Pedido();
-						pedido.setIdPedido(rs.getLong("id_pedido"));
-						pedido.setDataPedidoEmissao(rs.getString("data_pedido_emissao"));
-						pedido.setDescricaoPedido(rs.getString("descricao_pedido"));
-						pedido.setQtdeItemPedido(rs.getInt("qtde_item_pedido"));
-						
-						Produto produto = new Produto();
-						produto.setIdProduto(rs.getLong("id_produto"));
-						produto.setNomeProduto(rs.getString("nome_produto"));
-						produto.setDescricaoProduto(rs.getString("descricao_produto"));
-						produto.setPrecoProduto(rs.getDouble("preco_produto"));
-						produto.setEstoqueProduto(rs.getInt("estoque_produto"));
+						Cliente cliente = new Cliente();
+						cliente.setIdCliente(rs.getLong("id_cliente"));
+						cliente.setNomeCliente(rs.getString("nome_cliente"));
+						cliente.setCpfCliente(rs.getString("cpf_cliente"));
+						cliente.setEmailCliente(rs.getString("email_cliente"));
+						cliente.setSenhaCliente(rs.getString("senha_cliente"));
+						cliente.setTelefoneCliente(rs.getString("telefone_cliente"));
 					
-						produtoPedido.setPedido(pedido);
-						produtoPedido.setProduto(produto);
-						listaProdutoPedido.add(produtoPedido);
+						endereco.setCliente(cliente);
+						listaEnderecos.add(endereco);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					this.conexao.fecharConexao();
 				}
-				return listaProdutoPedido;
+				return listaEnderecos;
 			}
 		
 			//--------------------------------BUSCAR POR ID-----------------------------------------------		
 
-			// SELECT * FROM produto_pedido WHERE id_produto_pedido=2;
-			public ProdutoPedido buscarPorId(long id) {
+			// SELECT * FROM endereco WHERE id_endereco=2;
+			public Endereco buscarPorId(long id) {
 				// ABRIR A CONEXAO COM O BANCO
 				this.conexao.abrirConexao();
 				// SQL COM A OPERACAO QUE DESEJA-SE REALIZAR
-				String sqlInsert = "SELECT * FROM produto_pedido pp INNER JOIN pedido p ON pp.id_pedido = p.id_pedido INNER JOIN produto prod ON pp.id_produto = prod.id_produto WHERE id_produto_pedido=?;";
+				String sqlInsert = "SELECT * FROM endereco e INNER JOIN cliente c ON e.id_cliente = c.id_cliente WHERE id_endereco=?;";
 				PreparedStatement statement;
-				ProdutoPedido produtoPedido = null;
+				Endereco endereco = null;
 				try {
 					statement = this.conexao.getConexao().prepareStatement(sqlInsert);
 					statement.setLong(1, id);
 					ResultSet rs = statement.executeQuery();
 					if(rs.next()) {
-						// Converter um objeto ResultSet em um objeto ProdutoPedido
-						produtoPedido = new ProdutoPedido();
-						produtoPedido.setIdProdutoPedido(rs.getLong("id_produto_pedido"));
+						// Converter um objeto ResultSet em um objeto Endereco
+						endereco = new Endereco();
+						endereco.setIdEndereco(rs.getLong("id_endereco"));
+						endereco.setCep(rs.getString("cep"));
+						endereco.setEstado(rs.getString("estado"));
+						endereco.setCidade(rs.getString("cidade"));
+						endereco.setBairro(rs.getString("bairro"));
+						endereco.setRua(rs.getString("rua"));
+						endereco.setNumero(rs.getInt("numero"));
 						
-						Pedido pedido = new Pedido();
-						pedido.setIdPedido(rs.getLong("id_pedido"));
-						pedido.setDataPedidoEmissao(rs.getString("data_pedido_emissao"));
-						pedido.setDescricaoPedido(rs.getString("descricao_pedido"));
-						pedido.setQtdeItemPedido(rs.getInt("qtde_item_pedido"));
-						
-						Produto produto = new Produto();
-						produto.setIdProduto(rs.getLong("id_produto"));
-						produto.setNomeProduto(rs.getString("nome_produto"));
-						produto.setDescricaoProduto(rs.getString("descricao_produto"));
-						produto.setPrecoProduto(rs.getInt("preco_produto"));
-						produto.setEstoqueProduto(rs.getInt("estoque_produto"));
+						Cliente cliente = new Cliente();
+						cliente.setIdCliente(rs.getLong("id_cliente"));
+						cliente.setNomeCliente(rs.getString("nome_cliente"));
+						cliente.setCpfCliente(rs.getString("cpf_cliente"));
+						cliente.setEmailCliente(rs.getString("email_cliente"));
+						cliente.setSenhaCliente(rs.getString("senha_cliente"));
+						cliente.setTelefoneCliente(rs.getString("telefone_cliente"));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					this.conexao.fecharConexao();
 				}
-				return produtoPedido;
+				return endereco;
 			}	
 			
 			//------------------------------BUSCAR POR LOGIN E SENHA------------------------------

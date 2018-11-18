@@ -3,8 +3,7 @@ package br.com.integrador.petshop;
 import java.util.List;
 
 import br.com.integrador.petshop.model.Produto;
-//import br.com.integrador.petshop.model.Petshop;
-import br.com.integrador.petshop.repository.ProdutoDAO;
+import br.com.integrador.petshop.persistencia.ProdutoDAO;
 
 
 
