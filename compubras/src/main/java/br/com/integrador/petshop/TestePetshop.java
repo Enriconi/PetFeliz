@@ -1,4 +1,4 @@
-package br.com.integrador.petshop.testes;
+package br.com.integrador.petshop;
 
 import java.util.List;
 
