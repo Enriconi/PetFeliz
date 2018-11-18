@@ -14,7 +14,7 @@ import br.com.integrador.petshop.model.Petshop;
 import br.com.integrador.petshop.repository.PetshopDAO;
 
 @Controller    
-@RequestMapping(path="/petshop") 
+@RequestMapping(path="/petshop/") 
 public class PetshopController {
 
 	
@@ -29,7 +29,7 @@ public class PetshopController {
 
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "listar/", method = RequestMethod.GET)
     public ResponseEntity<List<Petshop>> listaTodosPetshops() {
 		
 		petDAO = new PetshopDAO();
