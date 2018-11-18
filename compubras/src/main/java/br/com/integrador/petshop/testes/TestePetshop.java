@@ -8,8 +8,8 @@ import br.com.integrador.petshop.persistencia.PetshopDAO;
 public class TestePetshop {
 	public static void main(String[] args) {
 	
-//		Petshop petshop = new Petshop(1, "Pet Feliz", "43.631.467/0001-42", "petfeliz@gmail.com", "thorzinho123", "051 9 8494-7993");
-//		
+//		Petshop petshop = new Petshop(5, "Pet Teste", "43.631.467/0001-40", "petteste@gmail.com", "thorzinho123", "051 9 8494-7994");
+
 //		PetshopDAO pDAO = new PetshopDAO();
 //		pDAO.cadastrar(petshop);
 		
