@@ -3,8 +3,8 @@ package br.com.integrador.petshop.model;
 public class ClientePedido {
 	
 	private long idClientePedido;
-	Cliente cliente;
-	Pedido pedido;
+	private Cliente cliente;
+	private Pedido pedido;
 	
 	public ClientePedido() {
 		

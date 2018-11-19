@@ -8,7 +8,7 @@ public class Cliente {
 	private String emailCliente;
 	private String senhaCliente;
 	private String telefoneCliente;
-	Petshop petshop;
+	private Petshop petshop;
 
 	public Cliente() {
 		
