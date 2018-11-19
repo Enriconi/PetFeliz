@@ -13,7 +13,7 @@ CREATE TABLE petshop (
 
 CREATE TABLE cliente (
   id_cliente BIGINT NOT NULL UNIQUE AUTO_INCREMENT,
-  nome_cliente VARCHAR(200) NOT NULL,
+  nome_cliente VARCHAR(100) NOT NULL,
   cpf_cliente VARCHAR(17) NOT NULL UNIQUE,
   email_cliente VARCHAR(150) NOT NULL,	
   senha_cliente VARCHAR(50) NOT NULL,
@@ -56,12 +56,12 @@ CREATE TABLE pedido (
 
 CREATE TABLE animal (
   id_animal BIGINT NOT NULL AUTO_INCREMENT UNIQUE,
-  nome_animal VARCHAR(20) NOT NULL,
+  nome_animal VARCHAR(30) NOT NULL,
   raca_animal VARCHAR(20) NOT NULL,
-  idade_animal DATETIME NOT NULL,
+  idade_animal INT NOT NULL,
   descricao_animal VARCHAR(100),
   sexo_animal VARCHAR(50) NOT NULL,
-  id_cliente BIGINT NOT NULL UNIQUE,
+  id_cliente BIGINT NOT NULL,
   id_petshop BIGINT NOT NULL,
   PRIMARY KEY (id_animal),
   FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
@@ -70,8 +70,8 @@ CREATE TABLE animal (
 
 CREATE TABLE cliente_pedido (
   id_cliente_pedido BIGINT NOT NULL UNIQUE AUTO_INCREMENT,
-  id_cliente BIGINT NOT NULL UNIQUE,
-  id_pedido BIGINT NOT NULL UNIQUE,
+  id_cliente BIGINT NOT NULL,
+  id_pedido BIGINT NOT NULL,
   PRIMARY KEY (id_cliente_pedido),
   FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
   FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido)
@@ -80,8 +80,8 @@ CREATE TABLE cliente_pedido (
 CREATE TABLE produto_pedido (
   id_produto_pedido BIGINT NOT NULL UNIQUE AUTO_INCREMENT,
   qtde_item_pedido INT NOT NULL,
-  id_pedido BIGINT NOT NULL UNIQUE,
-  id_produto BIGINT NOT NULL UNIQUE,
+  id_pedido BIGINT NOT NULL,
+  id_produto BIGINT NOT NULL,
   PRIMARY KEY (id_produto_pedido),
   FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido),
   FOREIGN KEY (id_produto) REFERENCES produto (id_produto)
