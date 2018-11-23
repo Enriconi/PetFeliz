@@ -5,9 +5,9 @@ CREATE TABLE petshop (
   id_petshop BIGINT NOT NULL UNIQUE AUTO_INCREMENT,
   nome_petshop VARCHAR(50) NOT NULL,
   cnpj_petshop VARCHAR(21) NOT NULL UNIQUE,
-  email_petshop VARCHAR(150) NOT NULL,
+  email_petshop VARCHAR(150) NOT NULL UNIQUE,
   senha_petshop VARCHAR(50) NOT NULL,
-  telefone_petshop VARCHAR(20) NOT NULL,
+  telefone_petshop VARCHAR(20) NOT NULL UNIQUE,
   PRIMARY KEY (id_petshop)
 );
 
@@ -15,9 +15,9 @@ CREATE TABLE cliente (
   id_cliente BIGINT NOT NULL UNIQUE AUTO_INCREMENT,
   nome_cliente VARCHAR(100) NOT NULL,
   cpf_cliente VARCHAR(17) NOT NULL UNIQUE,
-  email_cliente VARCHAR(150) NOT NULL,	
+  email_cliente VARCHAR(150) NOT NULL UNIQUE,	
   senha_cliente VARCHAR(50) NOT NULL,
-  telefone_cliente VARCHAR(20) NOT NULL,
+  telefone_cliente VARCHAR(20) NOT NULL UNIQUE,
   id_petshop BIGINT NOT NULL,
   PRIMARY KEY (id_cliente),
   FOREIGN KEY (id_petshop) REFERENCES petshop (id_petshop)
