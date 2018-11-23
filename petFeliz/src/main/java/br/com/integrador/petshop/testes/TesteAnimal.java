@@ -7,40 +7,38 @@ import br.com.integrador.petshop.model.Cliente;
 import br.com.integrador.petshop.model.Petshop;
 import br.com.integrador.petshop.persistencia.AnimalDAO;
 
-
-
 public class TesteAnimal {
 	public static void main(String[] args) {
 		
-//CADASTRAR ANIMAL
+// CADASTRAR ANIMAL
 		
 //		Cliente cliente = new Cliente();
 //		cliente.setIdCliente(1);
-		
+//		
 //		Petshop petshop = new Petshop();
 //		petshop.setIdPetshop(1);
-		
+//		
 //		Animal animal = new Animal();		
 //		animal.setNomeAnimal("Thor");
 //		animal.setRacaAnimal("Shit Zu");
 //		animal.setIdadeAnimal(6);
 //		animal.setDescricaoAnimal("Macho afeminado.");
 //		animal.setSexoAnimal("Masculino.");
-		
+//		
 //		AnimalDAO aDAO = new AnimalDAO();
-		
+//		
 //		animal.setCliente(cliente);
 //		animal.setPetshop(petshop);
 //		aDAO.cadastrar(animal);
 		
-//EDITAR ANIMAL
+// EDITAR ANIMAL
 		
 //		Cliente cliente = new Cliente();
 //		cliente.setIdCliente(1);
-		
+//		
 //		Petshop petshop = new Petshop();
 //		petshop.setIdPetshop(1);
-		
+//		
 //		Animal animal = new Animal();		
 //		animal.setNomeAnimal("Thor");
 //		animal.setRacaAnimal("Shit Zu");
@@ -48,31 +46,32 @@ public class TesteAnimal {
 //		animal.setDescricaoAnimal("Macho alpha.");
 //		animal.setSexoAnimal("Masculino.");
 //		animal.setIdAnimal(1);	
-		
+//		
 //		AnimalDAO aDAO = new AnimalDAO();
-		
+//		
 //		animal.setCliente(cliente);
 //		animal.setPetshop(petshop);
 //		aDAO.editar(animal);
 		
-//EXCLUIR ANIMAL
+// EXCLUIR ANIMAL
 		
 //		AnimalDAO aDAO = new AnimalDAO();
 //		aDAO.excluir(1);
 		
-//BUSCAR POR ID ANIMAL
+// BUSCAR POR ID ANIMAL
 		
 //		AnimalDAO aDAO = new AnimalDAO();
-//		Animal animal = aDAO.buscarPorId(1);
+//		Animal animal = (Animal) aDAO.buscarPorId(3);
 //		System.out.println("Animal buscado por ID: " + animal.getNomeAnimal());
 		
 
-//BUSCAR TODOS ANIMAL
+// BUSCAR TODOS ANIMAL
 
 //		AnimalDAO aDAO = new AnimalDAO();
-//		List<Animal> listaAnimal = aDAO.buscarTodos();
-//		for(int i = 0; i < listaAnimal.size(); i++) {
-//			System.out.println("Lista de animais: " + listaAnimal.get(i).getNomeAnimal());
+//		List<Object> listaAnimais = aDAO.buscarTodos();
+//		System.out.println("Lista de animais: ");
+//		for(int i = 0; i < listaAnimais.size(); i++) {
+//			System.out.println(((Animal) listaAnimais.get(i)).getNomeAnimal());
 //		}
 	}
 }

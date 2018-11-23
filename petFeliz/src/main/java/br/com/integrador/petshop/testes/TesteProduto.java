@@ -11,56 +11,57 @@ import br.com.integrador.petshop.persistencia.ProdutoDAO;
 public class TesteProduto {
 	public static void main(String[] args) {
 		
-//CADASTRAR PRODUTO
+// CADASTRAR PRODUTO
 		
 //		Petshop petshop = new Petshop();
 //		petshop.setIdPetshop(1);
-		
+//		
 //		Produto produto = new Produto();		
 //		produto.setNomeProduto("Pá para juntar cocô de gato.");
 //		produto.setDescricaoProduto("Junta vários cocôs.");
 //		produto.setPrecoProduto(12.50);
 //		produto.setEstoqueProduto(15);
-		
+//		
 //		ProdutoDAO pDAO = new ProdutoDAO();
-		
+//		
 //		produto.setPetshop(petshop);
 //		pDAO.cadastrar(produto);
 		
-//EDITAR PRODUTO
+// EDITAR PRODUTO
 		
 //		Petshop petshop = new Petshop();
 //		petshop.setIdPetshop(1);
-		
+//		
 //		Produto produto = new Produto();		
 //		produto.setNomeProduto("Pá para juntar cocô de cachorro.");
 //		produto.setDescricaoProduto("Junta vários cocôs.");
 //		produto.setPrecoProduto(12.50);
 //		produto.setEstoqueProduto(15);
 //		produto.setIdProduto(1);
-		
+//		
 //		ProdutoDAO pDAO = new ProdutoDAO();
-		
+//		
 //		produto.setPetshop(petshop);
 //		pDAO.editar(produto);
 		
-//EXCLUIR PRODUTO
+// EXCLUIR PRODUTO
 		
 //		ProdutoDAO pDAO = new ProdutoDAO();
 //		pDAO.excluir(1);
 		
-//BUSCAR POR ID PRODUTO
+// BUSCAR POR ID PRODUTO
 		
 //		ProdutoDAO pDAO = new ProdutoDAO();
-//		Produto produto = pDAO.buscarPorId(1);
+//		Produto produto = (Produto) pDAO.buscarPorId(1);
 //		System.out.println("Produto buscado por ID: " + produto.getNomeProduto());
 	
-//BUSCAR TODOS PRODUTO
+// BUSCAR TODOS PRODUTO
 	
 //		ProdutoDAO pDAO = new ProdutoDAO();
-//		List<Produto> listaProduto = pDAO.buscarTodos();
+//		List<Object> listaProduto = pDAO.buscarTodos();
+//		System.out.println("Lista de produtos: ");
 //		for(int i = 0; i < listaProduto.size(); i++) {
-//			System.out.println("Lista de produtos: " + listaProduto.get(i).getNomeProduto());
+//			System.out.println(((Produto) listaProduto.get(i)).getNomeProduto());
 //		}
 	}
 }
