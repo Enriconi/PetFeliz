@@ -13,66 +13,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.com.integrador.petshop.model.Endereco;
 import br.com.integrador.petshop.persistencia.EnderecoDAO;
 
-@Controller    
-@RequestMapping(path="/endereco/") 
+@Controller
+@RequestMapping(path = "/endereco/")
 public class EnderecoController {
 
-	
 	private EnderecoDAO eDAO;
-	
+
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	
+
 	public ResponseEntity<Endereco> cadastrar(@RequestBody Endereco endereco) {
 		eDAO = new EnderecoDAO();
-		endereco = eDAO.cadastrar(endereco);
+		endereco = (Endereco) eDAO.cadastrar(endereco);
 		return new ResponseEntity<Endereco>(endereco, HttpStatus.CREATED);
 
 	}
-	
+
 	@RequestMapping(value = "listar/", method = RequestMethod.GET)
-    public ResponseEntity<List<Endereco>> listaTodosEnderecos() {
-		
+	public ResponseEntity<List<Object>> listaTodosEnderecos() {
+
 		eDAO = new EnderecoDAO();
-		List<Endereco> listaEnderecos = eDAO.buscarTodos();		
-		return new ResponseEntity<List<Endereco>>(listaEnderecos, HttpStatus.OK);
+		List<Object> listaEnderecos = eDAO.buscarTodos();
+		return new ResponseEntity<List<Object>>(listaEnderecos, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public ResponseEntity<Void> editar(@RequestBody Endereco endereco){
+	public ResponseEntity<Void> editar(@RequestBody Endereco endereco) {
 		eDAO = new EnderecoDAO();
 		eDAO.editar(endereco);
 		return new ResponseEntity<Void>(HttpStatus.OK);
-		
+
 	}
-	
+
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable long id){
+	public ResponseEntity<Void> excluir(@PathVariable long id) {
 		eDAO = new EnderecoDAO();
 		eDAO.excluir(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<Endereco> buscarPorId(@PathVariable long id) {
 		eDAO = new EnderecoDAO();
-		Endereco endereco = eDAO.buscarPorId(id);
-		if(endereco!=null) {
+		Endereco endereco = (Endereco) eDAO.buscarPorId(id);
+		if (endereco != null) {
 			return new ResponseEntity<Endereco>(endereco, HttpStatus.OK);
-		}		
+		}
 		return new ResponseEntity<Endereco>(HttpStatus.NOT_FOUND);
 	}
-
-//NAO UTIL PARA ESSE METODO
-//	@RequestMapping(value = "{login}/{senha}", method = RequestMethod.GET)
-//	public ResponseEntity<Endereco> buscarPorLoginESenha(@PathVariable String login, @PathVariable String senha) {
-//		eDAO = new EnderecoDAO();
-//		Endereco endereco = eDAO.buscarPorLoginESenha(login, senha);
-//		if(endereco!=null) {
-//			return new ResponseEntity<Endereco>(endereco, HttpStatus.OK);
-//		}		
-//		return new ResponseEntity<Endereco>(HttpStatus.NOT_FOUND);
-//	}
 }
-
-

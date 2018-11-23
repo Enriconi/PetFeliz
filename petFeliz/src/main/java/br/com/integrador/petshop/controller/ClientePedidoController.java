@@ -62,17 +62,6 @@ public class ClientePedidoController {
 		}		
 		return new ResponseEntity<ClientePedido>(HttpStatus.NOT_FOUND);
 	}
-
-//NAO UTIL PARA ESSE METODO
-//	@RequestMapping(value = "{login}/{senha}", method = RequestMethod.GET)
-//	public ResponseEntity<ClientePedido> buscarPorLoginESenha(@PathVariable String login, @PathVariable String senha) {
-//		cpDAO = new ClientePedidoDAO();
-//		ClientePedido clientePedido = cpDAO.buscarPorLoginESenha(login, senha);
-//		if(clientePedido!=null) {
-//			return new ResponseEntity<ClientePedido>(clientePedido, HttpStatus.OK);
-//		}		
-//		return new ResponseEntity<ClientePedido>(HttpStatus.NOT_FOUND);
-//	}
 }
 
 

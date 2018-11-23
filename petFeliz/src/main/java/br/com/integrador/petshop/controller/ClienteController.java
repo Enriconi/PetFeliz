@@ -13,53 +13,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.com.integrador.petshop.model.Cliente;
 import br.com.integrador.petshop.persistencia.ClienteDAO;
 
-@Controller    
-@RequestMapping(path="/cliente/") 
+@Controller
+@RequestMapping(path = "/cliente/")
 public class ClienteController {
 
-	
 	private ClienteDAO cDAO;
-	
+
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	
+
 	public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente cliente) {
 		cDAO = new ClienteDAO();
-		cliente = cDAO.cadastrar(cliente);
+		cliente = (Cliente) cDAO.cadastrar(cliente);
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
 
 	}
-	
+
 	@RequestMapping(value = "listar/", method = RequestMethod.GET)
-    public ResponseEntity<List<Cliente>> listaTodosClientes() {
-		
+	public ResponseEntity<List<Object>> listaTodosClientes() {
+
 		cDAO = new ClienteDAO();
-		List<Cliente> listaClientes = cDAO.buscarTodos();		
-		return new ResponseEntity<List<Cliente>>(listaClientes, HttpStatus.OK);
+		List<Object> listaClientes = cDAO.buscarTodos();
+		return new ResponseEntity<List<Object>>(listaClientes, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public ResponseEntity<Void> editar(@RequestBody Cliente cliente){
+	public ResponseEntity<Void> editar(@RequestBody Cliente cliente) {
 		cDAO = new ClienteDAO();
 		cDAO.editar(cliente);
 		return new ResponseEntity<Void>(HttpStatus.OK);
-		
+
 	}
-	
+
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable long id){
+	public ResponseEntity<Void> excluir(@PathVariable long id) {
 		cDAO = new ClienteDAO();
 		cDAO.excluir(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> buscarPorId(@PathVariable long id) {
 		cDAO = new ClienteDAO();
-		Cliente cliente = cDAO.buscarPorId(id);
-		if(cliente!=null) {
+		Cliente cliente = (Cliente) cDAO.buscarPorId(id);
+		if (cliente != null) {
 			return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
-		}		
+		}
 		return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
 	}
 
@@ -67,11 +66,9 @@ public class ClienteController {
 	public ResponseEntity<Cliente> buscarPorLoginESenha(@PathVariable String login, @PathVariable String senha) {
 		cDAO = new ClienteDAO();
 		Cliente cliente = cDAO.buscarPorLoginESenha(login, senha);
-		if(cliente!=null) {
+		if (cliente != null) {
 			return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
-		}		
+		}
 		return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
 	}
 }
-
-

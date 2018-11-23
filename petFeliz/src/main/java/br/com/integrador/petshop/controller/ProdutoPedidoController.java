@@ -62,17 +62,6 @@ public class ProdutoPedidoController {
 		}		
 		return new ResponseEntity<ProdutoPedido>(HttpStatus.NOT_FOUND);
 	}
-
-//NAO UTIL PARA ESSE METODO
-//	@RequestMapping(value = "{login}/{senha}", method = RequestMethod.GET)
-//	public ResponseEntity<ProdutoPedido> buscarPorLoginESenha(@PathVariable String login, @PathVariable String senha) {
-//		prodpedaDAO = new ProdutoPedidoDAO();
-//		ProdutoPedido produtoPedido = prodpedaDAO.buscarPorLoginESenha(login, senha);
-//		if(produtoPedido!=null) {
-//			return new ResponseEntity<ProdutoPedido>(produtoPedido, HttpStatus.OK);
-//		}		
-//		return new ResponseEntity<ProdutoPedido>(HttpStatus.NOT_FOUND);
-//	}
 }
 
 

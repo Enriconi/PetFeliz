@@ -13,53 +13,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.com.integrador.petshop.model.Petshop;
 import br.com.integrador.petshop.persistencia.PetshopDAO;
 
-@Controller    
-@RequestMapping(path="/petshop/") 
+@Controller
+@RequestMapping(path = "/petshop/")
 public class PetshopController {
 
-	
 	private PetshopDAO petDAO;
-	
+
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	
+
 	public ResponseEntity<Petshop> cadastrar(@RequestBody Petshop petshop) {
 		petDAO = new PetshopDAO();
-		petshop = petDAO.cadastrar(petshop);
+		petshop = (Petshop) petDAO.cadastrar(petshop);
 		return new ResponseEntity<Petshop>(petshop, HttpStatus.CREATED);
 
 	}
-	
+
 	@RequestMapping(value = "listar/", method = RequestMethod.GET)
-    public ResponseEntity<List<Petshop>> listaTodosPetshops() {
-		
+	public ResponseEntity<List<Object>> listaTodosPetshops() {
+
 		petDAO = new PetshopDAO();
-		List<Petshop> listaPetshops = petDAO.buscarTodos();		
-		return new ResponseEntity<List<Petshop>>(listaPetshops, HttpStatus.OK);
+		List<Object> listaPetshops = petDAO.buscarTodos();
+		return new ResponseEntity<List<Object>>(listaPetshops, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public ResponseEntity<Void> editar(@RequestBody Petshop petshop){
+	public ResponseEntity<Void> editar(@RequestBody Petshop petshop) {
 		petDAO = new PetshopDAO();
 		petDAO.editar(petshop);
 		return new ResponseEntity<Void>(HttpStatus.OK);
-		
+
 	}
-	
+
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable long id){
+	public ResponseEntity<Void> excluir(@PathVariable long id) {
 		petDAO = new PetshopDAO();
 		petDAO.excluir(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<Petshop> buscarPorId(@PathVariable long id) {
 		petDAO = new PetshopDAO();
-		Petshop petshop = petDAO.buscarPorId(id);
-		if(petshop!=null) {
+		Petshop petshop = (Petshop) petDAO.buscarPorId(id);
+		if (petshop != null) {
 			return new ResponseEntity<Petshop>(petshop, HttpStatus.OK);
-		}		
+		}
 		return new ResponseEntity<Petshop>(HttpStatus.NOT_FOUND);
 	}
 
@@ -67,11 +66,9 @@ public class PetshopController {
 	public ResponseEntity<Petshop> buscarPorLoginESenha(@PathVariable String login, @PathVariable String senha) {
 		petDAO = new PetshopDAO();
 		Petshop petshop = petDAO.buscarPorLoginESenha(login, senha);
-		if(petshop!=null) {
+		if (petshop != null) {
 			return new ResponseEntity<Petshop>(petshop, HttpStatus.OK);
-		}		
+		}
 		return new ResponseEntity<Petshop>(HttpStatus.NOT_FOUND);
 	}
 }
-
-
