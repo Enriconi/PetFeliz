@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email" />
+    <EditText
+        android:id="@+id/et_confirmar_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirme seu e-mail" />
+    <EditText
+        android:id="@+id/et_senha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha" />
+    <EditText
+        android:id="@+id/et_confirmar_senha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirme sua senha" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submmeter"
+        android:id="@+id/bt_submeter"/>
+</LinearLayout>
