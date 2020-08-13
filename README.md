@@ -1,7 +1,7 @@
 <h1>🐶 PetFeliz - Projeto Integrador 2018</h1>
 <h4>Nesse projeto integrador, desenvolvi o PetFeliz, um aplicativo que os petshops se cadastrariam e o usuário poderia assim selecionar algum de sua preferência para comprar rações, ver medicações ou até mesmo levar seu animalzinho para tomar banho e ser tosado!</h4>
  
-<h2>🔥 Linguagens: </h2>
+<h2>🔥 Tecnologias: </h2>
 <ul>
   <li>Java</li>
   <li>JDBC</li>
